@@ -6,7 +6,7 @@ def customer
 end
 
 def movie
-  @movie ||= Movie.new("Lion King", 0)
+  @movie ||= Movie.new("Lion King", Movie::REGULAR)
 end
 
 def rental
@@ -18,8 +18,8 @@ describe Movie do
     assert_equal "Lion King", movie.title
   end
 
-  it "has a orice_code" do
-    assert_equal 0, movie.price_code
+  it "has a price_code" do
+    assert_equal Movie::REGULAR, movie.price_code
   end
 end
 
@@ -154,9 +154,9 @@ describe Customer do
 
     context "Renting multiple movies" do
       it "includes all movies in the statement" do
-        regular_rental =  Rental.new(Movie.new("The Warriors", 0), 2)
-        new_release_rental = Rental.new(Movie.new("Spectre", 1), 3)
-        childrens_rental = Rental.new(Movie.new("Despicable me 2", 2), 4)
+        regular_rental =  Rental.new(Movie.new("The Warriors", Movie::REGULAR), 2)
+        new_release_rental = Rental.new(Movie.new("Spectre", Movie::NEW_RELEASE), 3)
+        childrens_rental = Rental.new(Movie.new("Despicable me 2", Movie::CHILDRENS), 4)
 
         customer = Customer.new("Sally")
         [regular_rental, new_release_rental, childrens_rental].each do |rental|
