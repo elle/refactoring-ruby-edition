@@ -6,7 +6,7 @@ def customer
 end
 
 def movie
-  @movie ||= Movie.new("Lion King", 0)
+  @movie ||= Movie.new("Lion King", RegularPrice.new)
 end
 
 def rental
@@ -18,8 +18,8 @@ describe Movie do
     assert_equal "Lion King", movie.title
   end
 
-  it "has a orice_code" do
-    assert_equal 0, movie.price_code
+  it "has a price" do
+    assert_kind_of RegularPrice, movie.price
   end
 end
 
@@ -63,7 +63,7 @@ describe Customer do
       end
 
       it "displays statement for Movie::NEW_RELEASE" do
-        movie.price_code = Movie::NEW_RELEASE
+        movie.price = NewReleasePrice.new
         customer.add_rental @rental
 
         statement = "Rental Record for Bruce\n\tLion King\t3\nAmount owed is 3\nYou earned 1 frequent renter points"
@@ -72,7 +72,7 @@ describe Customer do
       end
 
       it "displays statement for Movie::CHILDRENS" do
-        movie.price_code = Movie::CHILDRENS
+        movie.price = ChildrensPrice.new
         customer.add_rental @rental
 
         statement = "Rental Record for Bruce\n\tLion King\t1.5\nAmount owed is 1.5\nYou earned 1 frequent renter points"
@@ -87,7 +87,7 @@ describe Customer do
       end
 
       it "displays statement for Movie::NEW_RELEASE" do
-        movie.price_code = Movie::NEW_RELEASE
+        movie.price = NewReleasePrice.new
         customer.add_rental @rental
 
         statement = "Rental Record for Bruce\n\tLion King\t6\nAmount owed is 6\nYou earned 2 frequent renter points"
@@ -110,7 +110,7 @@ describe Customer do
       end
 
       it "displays statement for Movie::NEW_RELEASE" do
-        movie.price_code = Movie::NEW_RELEASE
+        movie.price = NewReleasePrice.new
         customer.add_rental @rental
 
         statement = "Rental Record for Bruce\n\tLion King\t9\nAmount owed is 9\nYou earned 2 frequent renter points"
@@ -133,7 +133,7 @@ describe Customer do
       end
 
       it "displays statement for Movie::NEW_RELEASE" do
-        movie.price_code = Movie::NEW_RELEASE
+        movie.price = NewReleasePrice.new
         customer.add_rental @rental
 
         statement = "Rental Record for Bruce\n\tLion King\t12\nAmount owed is 12\nYou earned 2 frequent renter points"
@@ -142,7 +142,7 @@ describe Customer do
       end
 
       it "displays statement for Movie::CHILDRENS" do
-        movie.price_code = Movie::CHILDRENS
+        movie.price = ChildrensPrice.new
         customer.add_rental @rental
 
         statement = "Rental Record for Bruce\n\tLion King\t3.0\nAmount owed is 3.0\nYou earned 1 frequent renter points"
@@ -154,9 +154,9 @@ describe Customer do
 
     context "Renting multiple movies" do
       it "includes all movies in the statement" do
-        regular_rental =  Rental.new(Movie.new("The Warriors", 0), 2)
-        new_release_rental = Rental.new(Movie.new("Spectre", 1), 3)
-        childrens_rental = Rental.new(Movie.new("Despicable me 2", 2), 4)
+        regular_rental =  Rental.new(Movie.new("The Warriors", RegularPrice.new), 2)
+        new_release_rental = Rental.new(Movie.new("Spectre", NewReleasePrice.new), 3)
+        childrens_rental = Rental.new(Movie.new("Despicable me 2", ChildrensPrice.new), 4)
 
         customer = Customer.new("Sally")
         [regular_rental, new_release_rental, childrens_rental].each do |rental|
