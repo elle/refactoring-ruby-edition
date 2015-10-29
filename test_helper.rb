@@ -2,6 +2,7 @@ require "minitest/autorun"
 require "minitest/pride"
 
 require "awesome_print"
+require "byebug"
 
 require "minitest/reporters"
 Minitest::Reporters.use!
