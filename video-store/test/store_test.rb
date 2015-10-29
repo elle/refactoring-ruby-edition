@@ -150,5 +150,23 @@ describe Customer do
         assert_equal statement, customer.statement
       end
     end
+
+
+    context "Renting multiple movies" do
+      it "includes all movies in the statement" do
+        regular_rental =  Rental.new(Movie.new("The Warriors", 0), 2)
+        new_release_rental = Rental.new(Movie.new("Spectre", 1), 3)
+        childrens_rental = Rental.new(Movie.new("Despicable me 2", 2), 4)
+
+        customer = Customer.new("Sally")
+        [regular_rental, new_release_rental, childrens_rental].each do |rental|
+          customer.add_rental rental
+        end
+
+        statement = "Rental Record for Sally\n\tThe Warriors\t2\n\tSpectre\t9\n\tDespicable me 2\t3.0\nAmount owed is 14.0\nYou earned 4 frequent renter points"
+
+        assert_equal statement, customer.statement
+      end
+    end
   end
 end
